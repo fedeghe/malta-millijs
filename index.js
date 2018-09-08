@@ -48,7 +48,7 @@ function malta_millijs(obj, options) {
         obj.content = obj.content.replace(/(\s{2,})/gm, ' ');
 
         //remove most of the unuseful wrapping spaces
-        obj.content = obj.content.replace(/\s?([\:\;\}\{\]\[\)\(])\s?/gm, '$1');
+        obj.content = obj.content.replace(/\s?([\:\;\}\{\]\[\)\(\=\-\+\*])\s?/gm, '$1');
     } catch (err) {
         self.doErr(err, obj, pluginName);
     }
