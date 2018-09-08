@@ -15,7 +15,7 @@ The plugin will create a lightly minified file:
 
 ### Options
 
-- __leaveOriginal__
+- __leaveOrig__  
 If given as `true` the plugin will create two files, one .js containing the builded file, and another .min.js containing the minified version.  
 If not given the plugin will create just one .js minified file
 default value: false

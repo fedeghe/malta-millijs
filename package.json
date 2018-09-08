@@ -1,6 +1,6 @@
 {
   "name": "malta-millijs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "maltainimal plugin to reduce a bit the scripts size",
   "main": "index.js",
   "scripts": {
