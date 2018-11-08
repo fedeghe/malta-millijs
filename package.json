@@ -21,7 +21,7 @@
     "url": "https://github.com/fedeghe/malta-millijs/issues"
   },
   "dependencies": {
-    "malta": "^3.8.12"
+    "malta": "^3.8.14"
   },
   "homepage": "https://github.com/fedeghe/malta-millijs#readme"
 }
