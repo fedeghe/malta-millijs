@@ -1,27 +1,27 @@
 {
-  "name": "malta-millijs",
-  "version": "1.0.3",
-  "description": "maltainimal plugin to reduce a bit the scripts size",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/fedeghe/malta-millijs.git"
-  },
-  "keywords": [
-    "malta",
-    "malta plugin",
-    "malta minify js"
-  ],
-  "author": "Federico Ghedina <federico.ghedina@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/fedeghe/malta-millijs/issues"
-  },
-  "dependencies": {
-    "malta": "^3.8.14"
-  },
-  "homepage": "https://github.com/fedeghe/malta-millijs#readme"
+    "name": "malta-millijs",
+    "version": "1.0.3",
+    "description": "maltainimal plugin to reduce a bit the scripts size",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/fedeghe/malta-millijs.git"
+    },
+    "keywords": [
+        "malta",
+        "malta plugin",
+        "malta minify js"
+    ],
+    "author": "Federico Ghedina <fedeghe@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/fedeghe/malta-millijs/issues"
+    },
+    "dependencies": {
+        "malta": "^3.8.14"
+    },
+    "homepage": "https://github.com/fedeghe/malta-millijs#readme"
 }
