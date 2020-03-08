@@ -1,4 +1,4 @@
-var path = require('path'),
+const path = require('path'),
     fs = require('fs');
 
 function malta_millijs(obj, options) {
