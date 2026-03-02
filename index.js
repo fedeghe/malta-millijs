@@ -39,16 +39,31 @@ function malta_millijs(obj, options) {
 
     try {
         // remove multi/single line comments
-        obj.content = obj.content.replace(/(\/\*([\s\S]*?)\*\/)|(\/\/(.*)$)/gm, '');
+        obj.content = obj.content
+            .replace(/\/\*[\s\S]*?\*\//g, '')          // multiline comments
+            .replace(/(^|[^:\\])\/\/.*$/gm, '$1');     // single-line comments
 
         // remove new lines
-        obj.content = obj.content.replace(/(\n)/gm, '');
+        obj.content = obj.content.replace(/\R/g, '');
 
         // reduce to 1space
-        obj.content = obj.content.replace(/(\s{2,})/gm, ' ');
+        const STRINGS = /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)/g;
 
-        //remove most of the unuseful wrapping spaces
-        obj.content = obj.content.replace(/\s?([\:\;\}\{\]\[\)\(\=\-\+\*])\s?/gm, '$1');
+        obj.content = obj.content
+            .split(STRINGS)
+            .map((part, i) => {
+                if (i % 2) return part; // keep "..." / '...' / `...` untouched
+
+                return part
+                .replace(/\/\*[\s\S]*?\*\//g, '')
+                .replace(/(^|[^:\\])\/\/.*$/gm, '$1')
+                .replace(/\r?\n/g, '')
+                .replace(/[ \t]{2,}/g, ' ')
+                .replace(/\s*([:;{}[\]()=+*,-])\s*/g, '$1');
+            })
+            .join('')
+            .trim();
+
     } catch (err) {
         self.doErr(err, obj, pluginName);
     }
@@ -65,7 +80,9 @@ function malta_millijs(obj, options) {
         fs.writeFile(names.min, obj.content, (err) => {
             err && self.doErr(err, obj, pluginName);
             done.min = true;
-            msg.push('plugin ' + pluginName.white() + ' wrote ' + names.min + ' (' + self.getSize(names.min) + ')');
+            const newSize = obj.content.length,
+                originalSize = originalContent.length;
+            msg.push('plugin ' + pluginName.white() + ' wrote ' + names.min + ' (' + self.getSize(names.min) + ' | '+(100*newSize / originalSize).toFixed(2)+'% of original)');
             mayHaveDone();
         });
         leaveOriginal && fs.writeFile(originalName, originalContent, (err) => {
