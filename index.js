@@ -38,28 +38,24 @@ function malta_millijs(obj, options) {
     done.clean = !leaveOriginal;
 
     try {
-        // remove multi/single line comments
-        obj.content = obj.content
-            .replace(/\/\*[\s\S]*?\*\//g, '')          // multiline comments
-            .replace(/(^|[^:\\])\/\/.*$/gm, '$1');     // single-line comments
-
-        // remove new lines
-        obj.content = obj.content.replace(/\R/g, '');
-
-        // reduce to 1space
-        const STRINGS = /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)/g;
+        // Best-effort tokenization protecting strings, template literals
+        // (including simple ${...} expressions), and regex literals.
+        const TOKENS = /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\]|\$\{(?:[^{}]|\{[^{}]*\})*\})*`|\/(?![*/])(?:\\.|[^\/\r\n\\])*\/[gimsuy]*)/g;
 
         obj.content = obj.content
-            .split(STRINGS)
+            .split(TOKENS)
             .map((part, i) => {
-                if (i % 2) return part; // keep "..." / '...' / `...` untouched
+                if (i % 2) return part; // protected token
 
                 return part
-                .replace(/\/\*[\s\S]*?\*\//g, '')
-                .replace(/(^|[^:\\])\/\/.*$/gm, '$1')
-                .replace(/\r?\n/g, '')
-                .replace(/[ \t]{2,}/g, ' ')
-                .replace(/\s*([:;{}[\]()=+*,-])\s*/g, '$1');
+                    .replace(/\/\*[\s\S]*?\*\//g, '')   // multiline comments
+                    .replace(/\/\/.*$/gm, '')            // single-line comments
+                    .replace(/[\r\n]+/g, ' ')           // normalize newlines -> space
+                    .replace(/[ \t]+/g, ' ')             // collapse horizontal whitespace
+                    // Remove spaces around safe symbols/operators.
+                    // + and - are intentionally excluded to avoid breaking
+                    // unary expressions like `a + +b` or `a - -b`.
+                    .replace(/\s*([{}[\];:,=+\-*/%<>!&|^~?()])\s*/g, '$1');
             })
             .join('')
             .trim();
@@ -95,7 +91,7 @@ function malta_millijs(obj, options) {
 }
 /**
  * if the plugin shall be used only on some special file types
- * declare it (it can be an array too)  
+ * declare it (it can be an array too)
  * if not specified the plugin will be called on any file
  */
 malta_millijs.ext = ['js', 'coffee', 'ts'];
